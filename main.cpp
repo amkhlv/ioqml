@@ -30,7 +30,6 @@ int main(int argc, char *argv[])
     QObject::connect(pipeReader, SIGNAL(error(QString)), ioFunctions, SLOT(reportError(QString)));
     QObject::connect(pipeReader, SIGNAL(newcmd(QString)), ioFunctions, SLOT(sendToQML(QString)));
     QObject::connect(root, SIGNAL(putStr(QString)), ioFunctions, SLOT(putStrSlot(QString)));
-    QObject::connect(root, SIGNAL(killThread()), ioFunctions, SLOT(stopReadingStream()));
     QObject::connect(&engine, SIGNAL(quit()), QCoreApplication::instance(), SLOT(quit()));
 
     pipeReaderThread->start();

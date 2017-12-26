@@ -35,10 +35,6 @@ void IOFunctions::sendToQML(QString msg) {
     }
 }
 
-void IOFunctions::stopReadingStream() {
-    //qDebug() << "stopping the stdin reader" << endl;
-    listener->terminate();
-}
 
 void IOFunctions::reportError(QString err) {
     //qDebug() << "ERROR in Pipe Reader: " << err << endl;

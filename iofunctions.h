@@ -21,7 +21,6 @@ signals:
 public slots:
     void putStrSlot(QString msg);
     void sendToQML(QString msg);
-    void stopReadingStream();
     void reportError(QString err);
 };
 
