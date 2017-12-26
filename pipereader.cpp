@@ -15,10 +15,10 @@ void PipeReader::process() {
         emit newcmd(QString(writable));
         delete[] writable;
         if (x.compare("stop") == 0) { x = "" ; go = false; emit finished(); }
-        x = "";
+        x.erase();
     };
 }
 
 PipeReader::~PipeReader() {
-    x = "";
+    x.erase();
 }
