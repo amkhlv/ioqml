@@ -3,14 +3,29 @@
 #include "iofunctions.h"
 #include "pipereader.h"
 #include <QObject>
+#include <QCommandLineParser>
 
 int main(int argc, char *argv[])
 {
+    QCommandLineParser parser;
+    parser.setApplicationDescription("Generic GUI");
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addPositionalArgument("qmlfile", "QML file");
+    QCommandLineOption classOption(QStringList() << "c" << "class", "set WM_CLASS", "wmclass");
+    parser.addOption(classOption);
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 
+    parser.process(app);
+    const QStringList args = parser.positionalArguments();
+    if (parser.isSet(classOption)) {
+        QCoreApplication::setApplicationName(parser.value(classOption)) ;
+    }
+
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QLatin1String(argv[1])));
+    engine.load(QUrl(args.at(0)));
 
     QThread* pipeReaderThread = new QThread();
 

@@ -37,3 +37,15 @@ To generate output
 ==================
 
 Emitting the [QML signal](http://doc.qt.io/qt-5/qtqml-syntax-signals.html) `putStr(x)` prints `x` to `stdout` (see [examples](examples/)).
+
+
+To change WM_CLASS of the ioqml window
+======================================
+
+invoke with flags, _e.g._ :
+
+    ioqml --name MYNAME --class MYCLASS   myapp.qml
+
+--- sets `res_name` to `MYNAME` and `res_class` to `MYCLASS`
+
+(Notice that `--name` works for all `Qt` applications, starting from Qt 5.2)
