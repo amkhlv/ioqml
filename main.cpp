@@ -1,9 +1,11 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQuickWindow>
 #include "iofunctions.h"
 #include "pipereader.h"
 #include <QObject>
 #include <QCommandLineParser>
+#include <QDir>
 
 int main(int argc, char *argv[])
 {
@@ -14,6 +16,9 @@ int main(int argc, char *argv[])
     parser.addPositionalArgument("qmlfile", "QML file");
     QCommandLineOption classOption(QStringList() << "c" << "class", "set WM_CLASS", "wmclass");
     parser.addOption(classOption);
+    QCommandLineOption softwareRenderingOption(QStringList() << "software-rendering",
+        "Use Qt Quick's software renderer instead of the default graphics backend.");
+    parser.addOption(softwareRenderingOption);
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
@@ -27,9 +32,15 @@ int main(int argc, char *argv[])
     if (parser.isSet(classOption)) {
         QCoreApplication::setApplicationName(parser.value(classOption)) ;
     }
+    if (parser.isSet(softwareRenderingOption)) {
+        QQuickWindow::setSceneGraphBackend(QStringLiteral("software"));
+    }
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(args.at(0)));
+    engine.load(QUrl::fromUserInput(args.at(0), QDir::currentPath(), QUrl::AssumeLocalFile));
+    if (engine.rootObjects().isEmpty()) {
+        return 1;
+    }
 
     QThread* pipeReaderThread = new QThread();
 

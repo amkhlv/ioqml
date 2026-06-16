@@ -11,6 +11,29 @@ Example of invocation
 
     echo '{"prompt":"please enter passphrase and press Enter"}' | ioqml examples/pass-prompt.qml
 
+Troubleshooting graphics startup
+================================
+
+If Qt fails to start with messages like:
+
+    qt.qpa.wayland: EGL not available
+    QRhiGles2: Failed to create context
+    Failed to initialize graphics backend for OpenGL.
+
+run `ioqml` with Qt Quick's software renderer:
+
+    ioqml --software-rendering examples/pass-prompt.qml
+
+or, if you cannot change the command line used by a caller:
+
+    QT_QUICK_BACKEND=software ioqml examples/pass-prompt.qml
+
+This avoids the default OpenGL path, which needs a working EGL/OpenGL stack on
+Wayland. If you specifically want hardware rendering and have XWayland
+available, this may also work:
+
+    QT_QPA_PLATFORM=xcb ioqml examples/pass-prompt.qml
+
 
 Accepted commands
 =================
